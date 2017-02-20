@@ -1,5 +1,5 @@
 {
-  "name": "graphy.js",
+  "name": "geoshare.js",
   "version": "1.0.0",
   "description": "lightweight library to draw and interact geometry",
   "main": "gulpfile.js",
