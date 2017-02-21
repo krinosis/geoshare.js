@@ -7,7 +7,7 @@ var ugligy = require('gulp-uglify');
 var rename = require('gulp-rename');
 
 gulp.task('default', function() {
-    return gulp.src('src/core/*.js')
+    return gulp.src('src/core/js/*.js')
         .pipe(concat('geoshare.js'))
         .pipe(rename({suffix: '.min'}))
         .pipe(ugligy())
