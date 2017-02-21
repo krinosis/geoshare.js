@@ -12,8 +12,8 @@ var geoshare = function (DOM, author_data, user_data) {
     /************************   GLOBAL VARIABLES & SETTING UP   *************/    
     // author_data = JSON.parse(author_data);
 
-    var author_w = (author_data != null && author_data.w != null) ? parseInt(author_data.w) : 5;
-    var author_h = (author_data != null && author_data.h != null) ? parseInt(author_data.h) : 5;
+    var author_w = (author_data != null && author_data.w != null) ? parseInt(author_data.w) : 6;
+    var author_h = (author_data != null && author_data.h != null) ? parseInt(author_data.h) : 6;
 
     // Creating canvas
     var canvas = document.createElement("canvas");
@@ -34,28 +34,28 @@ var geoshare = function (DOM, author_data, user_data) {
     DOM.appendChild(document.createElement("br"));
 
     // Drawing Buttons
-    var line_btn = add_button(DOM, '/css/images/geo2d/line.png', 'Solid Line', 'top');
-    var dash_btn = add_button(DOM, '/css/images/geo2d/dash.png', 'Dashed Line', 'top');
-    var circle_btn = add_button(DOM, '/css/images/geo2d/circle.png', 'Circle', 'top');
-    var cross_point_btn = add_button(DOM, '/css/images/geo2d/cross.png', 'Crossed Point', 'top');
-    var dot_point_btn = add_button(DOM, '/css/images/geo2d/dot.png', 'Dotted Point', 'top');
-    var label_btn = add_button(DOM, '/css/images/geo2d/label.png', 'Text Label', 'top');
-    var height_btn = add_button(DOM, '/css/images/geo2d/height.png', 'Height', 'top');
+    var line_btn = add_button(DOM, 'src/core/img/line.png', 'Solid Line', 'top');
+    var dash_btn = add_button(DOM, 'src/core/img/dash.png', 'Dashed Line', 'top');
+    var circle_btn = add_button(DOM, 'src/core/img/circle.png', 'Circle', 'top');
+    var cross_point_btn = add_button(DOM, 'src/core/img/cross.png', 'Crossed Point', 'top');
+    var dot_point_btn = add_button(DOM, 'src/core/img/dot.png', 'Dotted Point', 'top');
+    var label_btn = add_button(DOM, 'src/core/img/label.png', 'Text Label', 'top');
+    var height_btn = add_button(DOM, 'src/core/img/height.png', 'Height', 'top');
 
     DOM.appendChild(document.createElement("br"));
 
-    var compass_btn = add_button(DOM, '/css/images/geo2d/compass.png', 'Compass', 'top');
-    var protractor_btn = add_button(DOM, '/css/images/geo2d/protr_label.png', 'Protractor', 'bottom');
-    var ruler_btn = add_button(DOM, '/css/images/geo2d/ruler.png', 'Ruler', 'bottom');
-    var select_btn = add_button(DOM, '/css/images/geo2d/select.png', 'Select', 'top');
-    var del_btn = add_button(DOM, '/css/images/geo2d/del-passive.png', 'Delete', 'top');
-    var copy_btn = add_button(DOM, '/css/images/geo2d/copy-passive.png', 'Copy', 'top');
+    var compass_btn = add_button(DOM, 'src/core/img/compass.png', 'Compass', 'top');
+    var protractor_btn = add_button(DOM, 'src/core/img/protr_label.png', 'Protractor', 'bottom');
+    var ruler_btn = add_button(DOM, 'src/core/img/ruler.png', 'Ruler', 'bottom');
+    var select_btn = add_button(DOM, 'src/core/img/select.png', 'Select', 'top');
+    var del_btn = add_button(DOM, 'src/core/img/del-passive.png', 'Delete', 'top');
+    var copy_btn = add_button(DOM, 'src/core/img/copy-passive.png', 'Copy', 'top');
 
     DOM.appendChild(document.createElement("br"));
 
     // Tool Buttons
-    var undo_btn = add_button(DOM, '/css/images/geo2d/undo-passive.png', 'Undo', 'left');
-    var redo_btn = add_button(DOM, '/css/images/geo2d/redo-passive.png', 'Redo', 'left');
+    var undo_btn = add_button(DOM, 'src/core/img/undo-passive.png', 'Undo', 'left');
+    var redo_btn = add_button(DOM, 'src/core/img/redo-passive.png', 'Redo', 'left');
 
     var reset_option_values = ['none' , 'solid_lines', 'dashed_lines', 'circles', 'cross_points', 'dot_points'   , 'compass', 'labels', 'ruler', 'protractor', 'all'];  // To be added in future
     var reset_option_htmls =  ['Clear', 'Solid Lines', 'Dashed Lines', 'Circles', 'Cross Points', 'Dotted Points', 'Compass', 'Labels', 'Ruler', 'Protractor', 'All'];  // To be added in future
@@ -83,9 +83,9 @@ var geoshare = function (DOM, author_data, user_data) {
 
     // Images
     var img_protractor = document.createElement("img");
-    img_protractor.src = "/css/images/geo2d/protractor.png";
+    img_protractor.src = "src/core/img/protractor.png";
     var img_ruler = document.createElement("img");
-    img_ruler.src = "/css/images/geo2d/ruler-" + (Math.max(author_w, author_h) - 1) + ".png";
+    img_ruler.src = "src/core/img/ruler-" + (Math.max(author_w, author_h) - 1) + ".png";
 
     // Global variables
     var color = 'black';                // Color
@@ -121,7 +121,7 @@ var geoshare = function (DOM, author_data, user_data) {
 
     // Set the image of the undo-redo buttons:
     if (undo_stack.length != 0) {
-        undo_btn.firstChild.src = '/css/images/geo2d/undo-active.png';
+        undo_btn.firstChild.src = 'src/core/img/undo-active.png';
     }
 
     /************************   ~GLOBAL VARIABLES & SETTING UP  *************/
@@ -240,10 +240,10 @@ var geoshare = function (DOM, author_data, user_data) {
             if (emitable) {
                 emit_data();
             }
-            redo_btn.firstChild.src = '/css/images/geo2d/redo-active.png';
+            redo_btn.firstChild.src = 'src/core/img/redo-active.png';
         }
         if (undo_stack.length == 0) {
-            undo_btn.firstChild.src = '/css/images/geo2d/undo-passive.png';
+            undo_btn.firstChild.src = 'src/core/img/undo-passive.png';
         }
         modify = true;
     }
@@ -279,10 +279,10 @@ var geoshare = function (DOM, author_data, user_data) {
             if (emitable) {
                 emit_data();
             }
-            undo_btn.firstChild.src = '/css/images/geo2d/undo-active.png';
+            undo_btn.firstChild.src = 'src/core/img/undo-active.png';
         }
         if (redo_stack.length == 0) {
-            redo_btn.firstChild.src = '/css/images/geo2d/redo-passive.png';
+            redo_btn.firstChild.src = 'src/core/img/redo-passive.png';
         }
         modify = true;
     }
@@ -309,7 +309,7 @@ var geoshare = function (DOM, author_data, user_data) {
             emit_data();
         }
         if (undo_stack.length == 0) {
-            undo_btn.firstChild.src = '/css/images/geo2d/undo-passive.png';
+            undo_btn.firstChild.src = 'src/core/img/undo-passive.png';
         }
         modify = true;
     }
@@ -323,8 +323,8 @@ var geoshare = function (DOM, author_data, user_data) {
     del_btn.onmousedown = function() {
         if (moving_transition != null) {
             restore_transition(moving_transition, null, null, null);
-            this.firstChild.src = '/css/images/geo2d/del-passive.png';
-            copy_btn.firstChild.src = '/css/images/geo2d/copy-passive.png';
+            this.firstChild.src = 'src/core/img/del-passive.png';
+            copy_btn.firstChild.src = 'src/core/img/copy-passive.png';
 
             user['del'].push(moving_transition);
             undo_stack.push('del');
@@ -341,8 +341,8 @@ var geoshare = function (DOM, author_data, user_data) {
         if (moving_transition != null) {
             copy_transition(moving_transition, user['select']);
 
-            del_btn.firstChild.src = '/css/images/geo2d/del-passive.png';
-            this.firstChild.src = '/css/images/geo2d/copy-passive.png';
+            del_btn.firstChild.src = 'src/core/img/del-passive.png';
+            this.firstChild.src = 'src/core/img/copy-passive.png';
             user['select'] = [];
             canvas.style.cursor = 'default';
             remove_lock([]);
@@ -529,7 +529,7 @@ var geoshare = function (DOM, author_data, user_data) {
         user['cross_points'].push([_x, _y, color]);
         undo_stack.push('cross_points');
         modify = true;
-        undo_btn.firstChild.src = '/css/images/geo2d/undo-active.png';
+        undo_btn.firstChild.src = 'src/core/img/undo-active.png';
         reset_redo();
 
         // if (socket != null) prepare_emit_action('u', 'cross_points', [_x, _y, color]);
@@ -543,7 +543,7 @@ var geoshare = function (DOM, author_data, user_data) {
         user['dot_points'].push([_x, _y, color]);
         undo_stack.push('dot_points');
         modify = true;
-        undo_btn.firstChild.src = '/css/images/geo2d/undo-active.png';
+        undo_btn.firstChild.src = 'src/core/img/undo-active.png';
         reset_redo();
 
         // if (socket != null) prepare_emit_action('u', 'dot_points', [_x, _y, color]);
@@ -556,7 +556,7 @@ var geoshare = function (DOM, author_data, user_data) {
         display_textbox(_x, _y, 'label');
         undo_stack.push('labels');
         modify = true;
-        undo_btn.firstChild.src = '/css/images/geo2d/undo-active.png';
+        undo_btn.firstChild.src = 'src/core/img/undo-active.png';
         reset_redo();
     }
 
@@ -615,7 +615,7 @@ var geoshare = function (DOM, author_data, user_data) {
             user['solid_lines'].push([x1, y1, x2, y2, color]);
             undo_stack.push('solid_lines');
             modify = true;
-            undo_btn.firstChild.src = '/css/images/geo2d/undo-active.png';
+            undo_btn.firstChild.src = 'src/core/img/undo-active.png';
             reset_redo();
 
             // if (socket != null) prepare_emit_action('u', 'solid_lines', [x1, y1, x2, y2, color]);
@@ -685,7 +685,7 @@ var geoshare = function (DOM, author_data, user_data) {
             user['dashed_lines'].push([x1, y1, x2, y2, color]);
             undo_stack.push('dashed_lines');
             modify = true;
-            undo_btn.firstChild.src = '/css/images/geo2d/undo-active.png';
+            undo_btn.firstChild.src = 'src/core/img/undo-active.png';
             reset_redo();
 
             // if (socket != null) prepare_emit_action('u', 'dashed_lines', [x1, y1, x2, y2, color]);
@@ -804,7 +804,7 @@ var geoshare = function (DOM, author_data, user_data) {
                 draw_dashed_line(_snap[0], _snap[1], _snap[5], _snap[6], color);
                 user['dashed_lines'].push([_snap[0], _snap[1], _snap[5], _snap[6], color]);
                 modify = true;
-                undo_btn.firstChild.src = '/css/images/geo2d/undo-active.png';
+                undo_btn.firstChild.src = 'src/core/img/undo-active.png';
                 reset_redo();
                 // if (socket != null)
                 //     prepare_emit_action('u', 'dashed_lines', [_snap[0], _snap[1], _snap[5], _snap[6], color]);
@@ -869,7 +869,7 @@ var geoshare = function (DOM, author_data, user_data) {
         }
         x1 = y1 = x2 = y2 = null;
         modify = true;
-        undo_btn.firstChild.src = '/css/images/geo2d/undo-active.png';
+        undo_btn.firstChild.src = 'src/core/img/undo-active.png';
         reset_redo();
     }
 
@@ -980,7 +980,7 @@ var geoshare = function (DOM, author_data, user_data) {
             }
         }
         modify = true;
-        undo_btn.firstChild.src = '/css/images/geo2d/undo-active.png';
+        undo_btn.firstChild.src = 'src/core/img/undo-active.png';
         reset_redo();
     }
 
@@ -1403,13 +1403,13 @@ var geoshare = function (DOM, author_data, user_data) {
 
         if (!transition_data_not_empty(moving_transition)) {
             locks['del'] = locks['copy'] = false;
-            del_btn.firstChild.src = '/css/images/geo2d/del-active.png';
-            copy_btn.firstChild.src = '/css/images/geo2d/copy-active.png';
+            del_btn.firstChild.src = 'src/core/img/del-active.png';
+            copy_btn.firstChild.src = 'src/core/img/copy-active.png';
         }
         else {
             locks['del'] = locks['copy'] = true;
-            del_btn.firstChild.src = '/css/images/geo2d/del-passive.png';
-            copy_btn.firstChild.src = '/css/images/geo2d/copy-passive.png';
+            del_btn.firstChild.src = 'src/core/img/del-passive.png';
+            copy_btn.firstChild.src = 'src/core/img/copy-passive.png';
         }
         
         if (!locks['select_move']) {
@@ -2963,7 +2963,7 @@ var geoshare = function (DOM, author_data, user_data) {
         user_redo['protr']          = [];   // The protractor set by users
         user_redo['heights']        = [];   // The heights entered by users
         redo_stack                  = [];   // The redo stack
-        redo_btn.firstChild.src     = '/css/images/geo2d/redo-passive.png';
+        redo_btn.firstChild.src     = 'src/core/img/redo-passive.png';
 
         // Transition & del
         user['select']              = [];   // The select box draw by user
