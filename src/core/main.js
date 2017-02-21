@@ -1,24 +1,9 @@
 var geoshare = function (DOM, author_data, user_data) {
     // Global data
     // The id of the div that contain the workspace.
-    // var workspace_id = DOM.id.split('-')[1];
-    var id_splits = DOM.id.split('-');
-    var ws_id = id_splits[1]+'-'+id_splits[2];
-    var mode = (data != null && data.mode != null) ? data.mode : null;
+    // var geo_id = DOM.id.split('-')[1];
+    var geo_id = DOM.id + '-geoshare';
 
-    if (mode == AUTHORING_DEFAULT_MODE) {
-
-    } else if (mode == AUTHORING_SOLUTION_MODE) {
-
-    } else if (mode == STUDENT_WORKING_MODE) {
-
-    } else if (mode == STUDENT_SOLUTION_MODE) {
-
-    } else {
-        console.log('Input Mode of Workspace not defined');
-    }
-
-    workspace_id = DOM.id.split('-')[1];
     var obj_list = {};
 
     // The switch for collaboration feature
@@ -27,8 +12,8 @@ var geoshare = function (DOM, author_data, user_data) {
     /************************   GLOBAL VARIABLES & SETTING UP   *************/    
     // author_data = JSON.parse(author_data);
 
-    var author_w = parseInt(author_data.w);
-    var author_h = parseInt(author_data.h);
+    var author_w = (author_data != null && author_data.w != null) ? parseInt(author_data.w) : 5;
+    var author_h = (author_data != null && author_data.h != null) ? parseInt(author_data.h) : 5;
 
     // Creating canvas
     var canvas = document.createElement("canvas");
@@ -43,7 +28,7 @@ var geoshare = function (DOM, author_data, user_data) {
     DOM.appendChild(canvas);
 
     // Initial drawing settings
-    var text_font = (author_data.text_font != null) ? author_data.text_font : "15px verdana";
+    var text_font = (author_data != null && author_data.text_font != null) ? author_data.text_font : "15px verdana";
     var browser = detect_browser();     // User browser
 
     DOM.appendChild(document.createElement("br"));
@@ -126,16 +111,8 @@ var geoshare = function (DOM, author_data, user_data) {
     var author = {};
     var user_redo = {};
 
-    // If this is in authoring, author_data will be user object, which is modifiable
-    if (caller == 'create' || caller == 'update') {
-        reset_user_data(author_data);
-    }
-
-    // If this is in classroom, author_data will be author object, which is not modifiable. However, the student can create and modify his user object data
-    else {
-        reset_user_data(user_data);
-        set_author_data(author_data);
-    }
+    reset_user_data(user_data);
+    set_author_data(author_data);
 
     // Restoration student data
     if (user_data != null && user_data != "") {
@@ -173,61 +150,51 @@ var geoshare = function (DOM, author_data, user_data) {
     // Cross point button
     cross_point_btn.onmousedown = function() {
         set_btn_onclick(this, ['cross'], '<i>INSTRUCTIONS</i><br><br>Locate point > CLICK');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Cross point button
     dot_point_btn.onmousedown = function() {
         set_btn_onclick(this, ['dot'], '<i>INSTRUCTIONS</i><br><br>Locate point > CLICK');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Label button
     label_btn.onmousedown = function() {
         set_btn_onclick(this, ['label'], '<i>INSTRUCTIONS</i><br><br>Locate label > CLICK<br>TYPE > <i>Enter</i>');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Height button
     height_btn.onmousedown = function() {
         set_btn_onclick(this, ['height'], '<i>INSTRUCTIONS</i><br><br>PRESS > DRAG > RELEASE');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Solid line button
     line_btn.onmousedown = function() {
         set_btn_onclick(this, ['solid_line'], '<i>INSTRUCTIONS</i><br><br>PRESS > DRAG > RELEASE');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Dashed line button
     dash_btn.onmousedown = function() {
         set_btn_onclick(this, ['dashed_line'], '<i>INSTRUCTIONS</i><br><br>PRESS > DRAG > RELEASE');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Circle button
     circle_btn.onmousedown = function() {
         set_btn_onclick(this, ['circle'], '<i>INSTRUCTIONS</i><br><br>Locate center<br>PRESS > DRAG > RELEASE');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Compass button
     compass_btn.onmousedown = function() {
         set_btn_onclick(this, ['compass'], '<i>INSTRUCTIONS</i><br><br>Locate center > CLICK > RELEASE<br>MOVE for radius<br>PRESS > DRAG > RELEASE');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Ruler button
     ruler_btn.onmousedown = function() {
         set_btn_onclick(this, ['ruler'], '<i>INSTRUCTIONS</i><br><br>Locate position > CLICK<br>Locate angle > CLICK');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Protractor button
     protractor_btn.onmousedown = function() {
         set_btn_onclick(this, ['protr'], '<i>INSTRUCTIONS</i><br><br>Locate position > CLICK<br>Locate angle > CLICK');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Undo button
@@ -335,7 +302,6 @@ var geoshare = function (DOM, author_data, user_data) {
         }
 
         reset_btn_classname();
-        remove_tooltip(DOM.id + '-canvas');
         this.selectedIndex = 0;
         remove_lock([]);
         restore_canvas();
@@ -351,13 +317,11 @@ var geoshare = function (DOM, author_data, user_data) {
     // Select button
     select_btn.onmousedown = function() {
         set_btn_onclick(this, ['select'], '<i>INSTRUCTIONS</i><br><br>DRAG TO SELECT');
-        current_canvas_id = this.id.split('-')[1];
     }
 
     // Del button/ Delete button
     del_btn.onmousedown = function() {
         if (moving_transition != null) {
-            current_canvas_id = this.id.split('-')[1];
             restore_transition(moving_transition, null, null, null);
             this.firstChild.src = '/css/images/geo2d/del-passive.png';
             copy_btn.firstChild.src = '/css/images/geo2d/copy-passive.png';
@@ -375,7 +339,6 @@ var geoshare = function (DOM, author_data, user_data) {
     // Copy button
     copy_btn.onmousedown = function() {
         if (moving_transition != null) {
-            current_canvas_id = this.id.split('-')[1];
             copy_transition(moving_transition, user['select']);
 
             del_btn.firstChild.src = '/css/images/geo2d/del-passive.png';
@@ -390,177 +353,171 @@ var geoshare = function (DOM, author_data, user_data) {
 
     // Control event flow when pressing the mouse
     mouse_down_handler = function (event) {
-        if (workspace_id == current_canvas_id || caller == 'create' || caller == 'update') {
-            event.preventDefault();
+        event.preventDefault();
 
-            // If plot cross point is enabled
-            if (!locks['cross']) {
-                cross_down(event);
-            }
+        // If plot cross point is enabled
+        if (!locks['cross']) {
+            cross_down(event);
+        }
 
-            // If plot dotted point is enabled
-            if (!locks['dot']) {
-                dot_down(event);
-            }
+        // If plot dotted point is enabled
+        if (!locks['dot']) {
+            dot_down(event);
+        }
 
-            // If sketch line is enabled
-            if (!locks['solid_line']) {
-                solid_down(event);
-            }
+        // If sketch line is enabled
+        if (!locks['solid_line']) {
+            solid_down(event);
+        }
 
-            // If dashed line is enabled
-            if (!locks['dashed_line']) {
-                dashed_down(event);
-            }
+        // If dashed line is enabled
+        if (!locks['dashed_line']) {
+            dashed_down(event);
+        }
 
-            // If drawing height is enabled
-            if (!locks['height']) {
-                height_down(event);
-            }
+        // If drawing height is enabled
+        if (!locks['height']) {
+            height_down(event);
+        }
 
-            // If draw circle is enabled
-            if (!locks['circle']) {
-                circle_down(event);
-            }
+        // If draw circle is enabled
+        if (!locks['circle']) {
+            circle_down(event);
+        }
 
-            // If setting ruler is enabled
-            if (!locks['ruler']) {
-                ruler_down(event);
-            }
+        // If setting ruler is enabled
+        if (!locks['ruler']) {
+            ruler_down(event);
+        }
 
-            // If setting compass is enabled
-            if (!locks['compass']) {
-                compass_down(event);
-            }
+        // If setting compass is enabled
+        if (!locks['compass']) {
+            compass_down(event);
+        }
 
-            // If setting protractor is enabled
-            if (!locks['protr']) {
-                protr_down(event);
-            }
+        // If setting protractor is enabled
+        if (!locks['protr']) {
+            protr_down(event);
+        }
 
-            // If labeling is enabled
-            if (!locks['label']) {
-                label_down(event);
-            }
+        // If labeling is enabled
+        if (!locks['label']) {
+            label_down(event);
+        }
 
-            // If selecting is enabled
-            if (!locks['select']) {
-                select_down(event);
-            }
+        // If selecting is enabled
+        if (!locks['select']) {
+            select_down(event);
+        }
 
-            // Emit data through socket
-            if (emitable) {
-                emit_data();
-            }
+        // Emit data through socket
+        if (emitable) {
+            emit_data();
         }
     }
 
     //Control event flow when moving the mouse
     mouse_move_handler = function (event) {
-        if (workspace_id == current_canvas_id || caller == 'create' || caller == 'update') {
-            event.preventDefault();
+        event.preventDefault();
 
-            // If sketch line is enabled
-            if (!locks['solid_line_move']) {
-                solid_move(event);
-            }
+        // If sketch line is enabled
+        if (!locks['solid_line_move']) {
+            solid_move(event);
+        }
 
-            // If sketch line is enabled
-            if (!locks['dashed_line_move']) {
-                dashed_move(event);
-            }
+        // If sketch line is enabled
+        if (!locks['dashed_line_move']) {
+            dashed_move(event);
+        }
 
-            // If drawing line is enabled
-            if (!locks['height_move']) {
-                height_move(event);
-            }
+        // If drawing line is enabled
+        if (!locks['height_move']) {
+            height_move(event);
+        }
 
-            // If draw circle is still enabled
-            if (!locks['circle']) {
-                circle_move(event);
-            }
+        // If draw circle is still enabled
+        if (!locks['circle']) {
+            circle_move(event);
+        }
 
-            // If moving ruler is enabled
-            if (!locks['ruler']) {
-                ruler_move(event);
-            }
+        // If moving ruler is enabled
+        if (!locks['ruler']) {
+            ruler_move(event);
+        }
 
-            // If moving protractor is enabled
-            if (!locks['protr']) {
-                protr_move(event);
-            }
+        // If moving protractor is enabled
+        if (!locks['protr']) {
+            protr_move(event);
+        }
 
-            // If compass is enabled
-            if (!locks['compass'] && locks['compass_rad'] && locks['compass_draw']) {
-                compass_move(event);
-            }
+        // If compass is enabled
+        if (!locks['compass'] && locks['compass_rad'] && locks['compass_draw']) {
+            compass_move(event);
+        }
 
-            // If setting compass radius is enabled
-            if (!locks['compass_rad']) {
-                compass_radius(event);
-            }
+        // If setting compass radius is enabled
+        if (!locks['compass_rad']) {
+            compass_radius(event);
+        }
 
-            // If drawing compass is enabled
-            if (!locks['compass_draw']) {
-                compass_draw(event);
-            }
+        // If drawing compass is enabled
+        if (!locks['compass_draw']) {
+            compass_draw(event);
+        }
 
-            // If moving selecting is enabled
-            if (!locks['select']) {
-                select_move(event);
-            }
+        // If moving selecting is enabled
+        if (!locks['select']) {
+            select_move(event);
         }
     }
 
     //Control event flow when releasing the mouse
     mouse_up_handler = function (event) {
-        if (workspace_id == current_canvas_id || caller == 'create' || caller == 'update') {
-            event.preventDefault();
+        event.preventDefault();
 
-            // If sketch line was enabled
-            if (!locks['solid_line']) {
-                solid_up(event);
-            }
+        // If sketch line was enabled
+        if (!locks['solid_line']) {
+            solid_up(event);
+        }
 
-            // If sketch dashed line was enabled
-            if (!locks['dashed_line']) {
-                dashed_up(event);
-            }
+        // If sketch dashed line was enabled
+        if (!locks['dashed_line']) {
+            dashed_up(event);
+        }
 
-            // If draw line was enabled
-            if (!locks['height']) {
-                height_up(event);
-            }
+        // If draw line was enabled
+        if (!locks['height']) {
+            height_up(event);
+        }
 
-            // If drawing circle was still enabled
-            if (!locks['circle']) {
-                circle_up(event);
-            }
+        // If drawing circle was still enabled
+        if (!locks['circle']) {
+            circle_up(event);
+        }
 
-            // If setting compass was still enabled
-            if (!locks['compass']) {
-                compass_up(event);
-            }
+        // If setting compass was still enabled
+        if (!locks['compass']) {
+            compass_up(event);
+        }
 
-            // If ruler was enabled
-            if (!locks['ruler']) {
-                ruler_up(event);
-            }
+        // If ruler was enabled
+        if (!locks['ruler']) {
+            ruler_up(event);
+        }
 
-            // If ruler was enabled
-            if (!locks['protr']) {
-                protr_up(event);
-            }
+        // If ruler was enabled
+        if (!locks['protr']) {
+            protr_up(event);
+        }
 
-            // If moving selecting was enabled
-            if (!locks['select']) {
-                select_up(event);
-            }
+        // If moving selecting was enabled
+        if (!locks['select']) {
+            select_up(event);
+        }
 
-            // Emit data through socket
-            if (emitable) {
-                emit_data();
-            }
+        // Emit data through socket
+        if (emitable) {
+            emit_data();
         }
     }
 
@@ -1393,48 +1350,39 @@ var geoshare = function (DOM, author_data, user_data) {
                 if (length_line(_x, _y, x1, y1) < _thres) {
                     canvas.style.cursor = 'alias';
                     highlight_point(x1, y1, _thres);
-                    tooltip(DOM.id + '-canvas', 'ROTATE<br><br>IMPORTANT: MOVE SLOWLY', 'right');
                 }
                 else if (length_line(_x, _y, x1, y2) < _thres) {
                     canvas.style.cursor = 'alias';
                     highlight_point(x1, y2, _thres);
-                    tooltip(DOM.id + '-canvas', 'ROTATE<br><br>IMPORTANT: MOVE SLOWLY', 'right');
                 }
                 else if (length_line(_x, _y, x2, y1) < _thres) {
                     canvas.style.cursor = 'alias';
                     highlight_point(x2, y1, _thres);
-                    tooltip(DOM.id + '-canvas', 'ROTATE<br><br>IMPORTANT: MOVE SLOWLY', 'right');
                 }
                 else if (length_line(_x, _y, x2, y2) < _thres) {
                     canvas.style.cursor = 'alias';
                     highlight_point(x2, y2, _thres);
-                    tooltip(DOM.id + '-canvas', 'ROTATE<br><br>IMPORTANT: MOVE SLOWLY', 'right');
                 }
                 // Searching for the location of flipping
                 else if (length_line(_x, _y, x1, (y1 + y2)/2) < _thres) {
                     canvas.style.cursor = 'e-resize';
                     highlight_point(x1, (y1 + y2)/2, _thres);
-                    tooltip(DOM.id + '-canvas', 'SCALE', 'right');
                 }
                 else if (length_line(_x, _y, (x1 + x2)/2, y1) < _thres) {
                     canvas.style.cursor = 'n-resize';
                     highlight_point((x1 + x2)/2, y1, _thres);
-                    tooltip(DOM.id + '-canvas', 'SCALE', 'right');
                 }
                 else if (length_line(_x, _y, x2, (y1 + y2)/2) < _thres) {
                     canvas.style.cursor = 'e-resize';
                     highlight_point(x2, (y1 + y2)/2, _thres);
-                    tooltip(DOM.id + '-canvas', 'SCALE', 'right');
                 }
                 else if (length_line(_x, _y, (x1 + x2)/2, y2) < _thres) {
                     canvas.style.cursor = 'n-resize';
                     highlight_point((x1 + x2)/2, y2, _thres);
-                    tooltip(DOM.id + '-canvas', 'SCALE', 'right');
                 }
                 // Searching for the location of dragging
                 else if (x1 <= _x && _x <= x2 && y1 <= _y && _y <= y2) {
                     canvas.style.cursor = 'move';
-                    tooltip(DOM.id + '-canvas', 'DRAG', 'right');
                 }
                 // Default
                 else {
@@ -3152,7 +3100,7 @@ var geoshare = function (DOM, author_data, user_data) {
             draw_select_box(user['select']);
         }
 
-        if (caller != 'create' && caller != 'update') {
+        if (author_data != null) {
             // Restore author cross points
             for (var i = 0; i < author['cross_points'].length; i++) {
                 plot_point_cross(author['cross_points'][i][0], author['cross_points'][i][1], author['cross_points'][i][2]);
@@ -3290,7 +3238,6 @@ var geoshare = function (DOM, author_data, user_data) {
     function set_btn_onclick(btn, types, tip) {
         if (btn.className != 'geo2d-btn') {
             btn.className = 'geo2d-btn';
-            remove_tooltip(DOM.id + '-canvas');
             remove_lock([]);    // Lock all
             if ($.inArray('ruler', types) > -1) user['ruler'] = [];
             if ($.inArray('protr', types) > -1) user['protr'] = [];
@@ -3299,7 +3246,6 @@ var geoshare = function (DOM, author_data, user_data) {
             reset_btn_classname();
             btn.className = 'geo2d-btn-onclick';
             if (types != null) remove_lock(types);
-            if (tip != null) tooltip(DOM.id + '-canvas', tip, 'right');
         }
 
         user['select'] = [];
@@ -3313,23 +3259,6 @@ var geoshare = function (DOM, author_data, user_data) {
         for (var i = 0; i < elements.length; i++) {
             elements[i].className = 'geo2d-btn';
         }
-    }
-
-    // Tooltip
-    function tooltip(id, tip_text, placement) {
-        remove_tooltip(id);
-        $("#" + id).tooltip({
-            // animation: false,
-            placement: placement,
-            title: tip_text,
-            trigger: '',
-        });
-        $("#" + id).tooltip('show');
-    }
-
-    // Toolip remove
-    function remove_tooltip(id) {
-        $("#" + id).tooltip('destroy');
     }
 
     // Helper function to get object size
@@ -3348,13 +3277,13 @@ var geoshare = function (DOM, author_data, user_data) {
                 if (group_type == '0') {
                     socket.emit(
                         'free-group-client-data',
-                        JSON.stringify({'ws_id':workspace_id,'delta':JSON.stringify(data_binding())})
+                        JSON.stringify({'ws_id':geo_id,'delta':JSON.stringify(data_binding())})
                     );
                 }
                 else {
                     socket.emit(
                         'assigned-group-client-data',
-                        JSON.stringify({'g':g,'w':w,'q':q,'ws_id':workspace_id,'delta':JSON.stringify(data_binding())})
+                        JSON.stringify({'g':g,'w':w,'q':q,'ws_id':geo_id,'delta':JSON.stringify(data_binding())})
                     );
                 }
             break;
@@ -3362,14 +3291,14 @@ var geoshare = function (DOM, author_data, user_data) {
             case 'practice':
                 socket.emit(
                     'practice-client-data',
-                    JSON.stringify({'ws_id':workspace_id,'data':JSON.stringify(data_binding())})
+                    JSON.stringify({'ws_id':geo_id,'data':JSON.stringify(data_binding())})
                 );
             break;
 
             case 'whiteboard':
                 socket.emit(
                     'whiteboard-client-data',
-                    JSON.stringify({'ws_id':workspace_id,'data':JSON.stringify(data_binding())})
+                    JSON.stringify({'ws_id':geo_id,'data':JSON.stringify(data_binding())})
                 );
             break;
 
@@ -3476,7 +3405,7 @@ var geoshare = function (DOM, author_data, user_data) {
 
     function geo2d_emit_data(action) {
         socket.emit('client-data', 
-            JSON.stringify({'caller':caller,'c':c,'w':w,'q':q,'wo':wb_owner,'ws_id':workspace_id,'delta':action}));
+            JSON.stringify({'caller':caller,'c':c,'w':w,'q':q,'wo':wb_owner,'ws_id':geo_id,'delta':action}));
     }
 
     // To strip the remvoed data before sending
@@ -3595,9 +3524,6 @@ var geoshare = function (DOM, author_data, user_data) {
         },
         switch_emitable: function(status) {
             emitable = status;
-        },
-        clear_tooltips: function() {
-            remove_tooltip(DOM.id+'-canvas');
         },
         getType: function() {
             return 'geo2d';
